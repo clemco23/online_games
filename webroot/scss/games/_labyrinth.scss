@@ -1,0 +1,236 @@
+@use '../abstracts/variables' as *;
+
+.labyrinth-page {
+    width: min(1100px, 100%);
+    margin: 0 auto;
+    display: grid;
+    gap: 24px;
+    color: $text;
+}
+
+.labyrinth-header {
+    display: grid;
+    gap: 12px;
+
+    h1 {
+        margin: 0;
+        color: #ffffff;
+        font-size: clamp(3.8rem, 6vw, 6.4rem);
+        line-height: 1;
+        letter-spacing: -0.05em;
+    }
+
+    p {
+        margin: 0;
+        max-width: 680px;
+        color: #c7ceda;
+        font-size: 1.8rem;
+        line-height: 1.55;
+    }
+}
+
+.labyrinth-eyebrow {
+    color: $accent-text;
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.labyrinth-primary-action,
+.labyrinth-session-action {
+    width: fit-content;
+    border-radius: 8px;
+    background: $accent;
+    border-color: $accent;
+    color: #ffffff;
+    font-weight: 700;
+}
+
+.labyrinth-panel,
+.labyrinth-board-shell,
+.labyrinth-hud {
+    border: 1px solid rgba(133, 142, 160, 0.18);
+    border-radius: 8px;
+    background: rgba(15, 19, 27, 0.9);
+    box-shadow: $card-shadow;
+}
+
+.labyrinth-panel {
+    padding: 24px;
+
+    h2 {
+        margin: 0 0 18px;
+        color: #ffffff;
+        font-size: 2.8rem;
+        letter-spacing: -0.03em;
+    }
+}
+
+.labyrinth-muted {
+    margin: 0;
+    color: $muted;
+}
+
+.labyrinth-session-list {
+    display: grid;
+    gap: 12px;
+}
+
+.labyrinth-session-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.04);
+
+    div {
+        display: grid;
+        gap: 4px;
+    }
+
+    strong {
+        color: #ffffff;
+    }
+
+    span {
+        color: $muted;
+    }
+}
+
+.labyrinth-session-status {
+    width: fit-content;
+    padding: 4px 8px;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    font-weight: 700;
+
+    &.is-active {
+        background: rgba(36, 180, 126, 0.16);
+        color: #7de3b8;
+    }
+
+    &.is-waiting {
+        background: rgba(244, 197, 66, 0.16);
+        color: #f4c542;
+    }
+
+    &.is-finished {
+        background: rgba(255, 255, 255, 0.08);
+        color: #c7ceda;
+    }
+}
+
+.labyrinth-game {
+    padding-bottom: 40px;
+}
+
+.labyrinth-hud {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 14px 18px;
+    color: #dfe3ea;
+    font-weight: 700;
+
+    strong {
+        color: #ffffff;
+    }
+}
+
+.labyrinth-board-shell {
+    padding: 18px;
+    overflow-x: auto;
+}
+
+.labyrinth-board {
+    --labyrinth-columns: 12;
+
+    display: grid;
+    grid-template-columns: repeat(var(--labyrinth-columns), minmax(32px, 1fr));
+    gap: 4px;
+    min-width: min(760px, 100%);
+}
+
+.labyrinth-cell {
+    aspect-ratio: 1;
+    min-width: 32px;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-size: 1.2rem;
+    font-weight: 800;
+}
+
+.labyrinth-cell--wall {
+    background: #202530;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+}
+
+.labyrinth-cell--path {
+    background: #e5e9f0;
+    color: $nav-bg;
+}
+
+.labyrinth-cell--treasure {
+    background: #f4c542;
+    color: #241b00;
+}
+
+.labyrinth-cell--player-1 {
+    background: #24b47e;
+    color: #ffffff;
+}
+
+.labyrinth-cell--player-2 {
+    background: #2f80ed;
+    color: #ffffff;
+}
+
+.labyrinth-controls {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+
+    form {
+        margin: 0;
+    }
+
+    button {
+        width: 100%;
+        min-height: 46px;
+        border-radius: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        background: rgba(255, 255, 255, 0.08);
+        color: #ffffff;
+        font-weight: 700;
+        cursor: pointer;
+
+        &:hover,
+        &:focus {
+            background: rgba(255, 255, 255, 0.14);
+        }
+
+        &:disabled {
+            opacity: 0.42;
+            cursor: not-allowed;
+        }
+    }
+}
+
+@media screen and (max-width: 700px) {
+    .labyrinth-controls {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .labyrinth-session-card {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}

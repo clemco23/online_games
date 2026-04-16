@@ -1,0 +1,20 @@
+@use '../abstracts/variables' as *;
+
+body {
+    height: 100%;
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background: #f9f9fb;
+    color: $nav-bg;
+}
+
+.main {
+    overflow: hidden;
+    height: 100%;
+    padding: 32px 0 56px;
+    background:
+        linear-gradient(180deg, rgba(7, 10, 16, 0.28) 0%, rgba(7, 10, 16, 0.78) 56%, #0c0f17 100%),
+        radial-gradient(circle at top, rgba(124, 59, 237, 0.22), transparent 38%),
+        url('../img/back.png') center 18% / cover no-repeat;
+    z-index: -2;
+}

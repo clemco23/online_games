@@ -1,0 +1,296 @@
+@use '../abstracts/variables' as *;
+
+.mastermind-page {
+    width: min(1000px, 100%);
+    min-height: 80vh;
+    margin: 0 auto;
+    display: grid;
+    gap: 24px;
+    color: $text;
+}
+
+.mastermind-header {
+    background-color: #2ecc71;
+    display: grid;
+    gap: 8px;
+
+    .mastermind-up {
+    color: $accent-text;
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+    h1 {
+        margin: 0;
+        color: #ffffff;
+        font-size: clamp(3.4rem, 5vw, 5.6rem);
+        letter-spacing: -0.05em;
+    }
+
+    p {
+        margin: 0;
+        max-width: 680px;
+        color: #e8f7ee;
+        font-size: 1.8rem;
+        line-height: 1.55;
+    }
+}
+
+.mastermind-primary-action,
+.mastermind-session-action {
+    width: fit-content;
+    border-radius: 8px;
+    background: $accent;
+    border-color: $accent;
+    color: #ffffff;
+    font-weight: 700;
+}
+
+
+
+.mastermind-game,
+.mastermind-history,
+.mastermind-panel {
+    padding: 24px;
+    border: 1px solid rgba(133, 142, 160, 0.18);
+    border-radius: 8px;
+    background: rgba(15, 19, 27, 0.9);
+    box-shadow: $card-shadow;
+}
+
+.mastermind-panel {
+    h2 {
+        margin: 0 0 18px;
+        color: #ffffff;
+        font-size: 2.8rem;
+        letter-spacing: -0.03em;
+    }
+}
+
+.mastermind-muted {
+    margin: 0;
+    color: $muted;
+}
+
+.mastermind-session-list {
+    display: grid;
+    gap: 12px;
+}
+
+.mastermind-session-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.04);
+
+    div {
+        display: grid;
+        gap: 4px;
+    }
+
+    strong {
+        color: #ffffff;
+    }
+
+    span {
+        color: $muted;
+    }
+}
+
+.mastermind-session-status {
+    width: fit-content;
+    padding: 4px 8px;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    font-weight: 700;
+
+    &.is-active {
+        background: rgba(36, 180, 126, 0.16);
+        color: #7de3b8;
+    }
+
+    &.is-finished {
+        background: rgba(255, 255, 255, 0.08);
+        color: #c7ceda;
+    }
+}
+
+.mastermind-game {
+    fieldset {
+        margin: 0;
+        padding: 0;
+        border: 0;
+    }
+
+    legend {
+        margin-bottom: 16px;
+        color: #ffffff;
+        font-weight: 700;
+    }
+
+    label {
+        color: #dfe3ea;
+        font-weight: 700;
+    }
+
+    select {
+        background: #ffffff;
+        color: $nav-bg;
+    }
+}
+
+.mastermind-guess-fields {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.mastermind-submit {
+    border-radius: 8px;
+    background: $accent;
+    border-color: $accent;
+}
+
+.mastermind-attempts {
+    margin: 0 0 16px;
+    color: $muted;
+    font-weight: 700;
+}
+
+.mastermind-result {
+    margin: 0;
+    color: #ffffff;
+    font-weight: 700;
+}
+
+.mastermind-history-title {
+    margin: 0 0 18px;
+    color: #ffffff;
+    font-size: 2.8rem;
+    letter-spacing: -0.03em;
+}
+
+.mastermind-history-table-wrap {
+    overflow-x: auto;
+}
+
+.mastermind-history-table {
+    width: 100%;
+    min-width: 620px;
+    margin-bottom: 0;
+    border-collapse: collapse;
+
+    th,
+    td {
+        padding: 14px 16px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        color: $text;
+        vertical-align: middle;
+    }
+
+    th {
+        color: $muted;
+        font-size: 1.1rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+    }
+
+    tbody tr:last-child td {
+        border-bottom: 0;
+    }
+}
+
+.mastermind-pegs {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.mastermind-peg {
+    width: 18px;
+    height: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 999px;
+    display: inline-block;
+}
+
+.mastermind-peg--red {
+    background-color: #e74c3c;
+}
+
+.mastermind-peg--blue {
+    background-color: #3498db;
+}
+
+.mastermind-peg--green {
+    background-color: #2ecc71;
+}
+
+.mastermind-peg--yellow {
+    background-color: #f1c40f;
+}
+
+.mastermind-peg--orange {
+    background-color: #f39c12;
+}
+
+.mastermind-peg--purple {
+    background-color: #8e44ad;
+}
+
+.mastermind-peg--black {
+    background-color: #111318;
+}
+
+.mastermind-peg--white {
+    background-color: #ffffff;
+}
+
+.mastermind-badge {
+    display: inline-flex;
+    min-width: 32px;
+    padding: 4px 10px;
+    border-radius: 8px;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+
+.mastermind-badge--well {
+    background: #ffffff;
+    color: $nav-bg;
+}
+
+.mastermind-badge--wrong {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    color: $text;
+}
+
+.mastermind-empty {
+    color: $muted;
+    text-align: center;
+}
+
+@media screen and (max-width: 700px) {
+    .mastermind-guess-fields {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .mastermind-session-card {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
+
+@media screen and (max-width: 460px) {
+    .mastermind-guess-fields {
+        grid-template-columns: 1fr;
+    }
+}

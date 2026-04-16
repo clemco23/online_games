@@ -1,0 +1,146 @@
+@use '../abstracts/variables' as *;
+
+.boardgame-instructions-page {
+    width: min(1100px, 100%);
+    margin: 0 auto;
+    padding: 36px 0 64px;
+    display: grid;
+    gap: 26px;
+    color: $text;
+}
+
+.boardgame-instructions-back,
+.boardgame-instructions-page > p:first-of-type {
+    margin: 0;
+
+    a {
+        color: #d6c6ff;
+        font-weight: 700;
+        text-decoration: none;
+
+        &:hover,
+        &:focus {
+            color: #ffffff;
+        }
+    }
+}
+
+.boardgame-instructions-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(280px, 0.95fr);
+    gap: 32px;
+    align-items: center;
+}
+
+.boardgame-instructions-copy {
+    display: grid;
+    gap: 16px;
+}
+
+.boardgame-instructions-eyebrow {
+    color: $accent-text;
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.boardgame-instructions-title {
+    margin: 0;
+    color: #ffffff;
+    font-size: clamp(3.8rem, 6vw, 6.4rem);
+    line-height: 1;
+    letter-spacing: -0.05em;
+}
+
+.boardgame-instructions-description {
+    margin: 0;
+    color: #c7ceda;
+    font-size: 1.9rem;
+    line-height: 1.65;
+}
+
+.boardgame-instructions-media {
+    margin: 0;
+    overflow: hidden;
+    border: 1px solid rgba(167, 129, 255, 0.22);
+    border-radius: 8px;
+    background: rgba(17, 19, 24, 0.72);
+    box-shadow: 0 24px 54px rgba(7, 10, 16, 0.32);
+}
+
+.boardgame-instructions-image {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+}
+
+.boardgame-instructions-panel {
+    padding: 28px;
+    border: 1px solid rgba(133, 142, 160, 0.18);
+    border-radius: 8px;
+    background: rgba(15, 19, 27, 0.9);
+    box-shadow: $card-shadow;
+
+    h2 {
+        margin: 0;
+        color: #ffffff;
+        font-size: 2.8rem;
+        letter-spacing: -0.03em;
+    }
+}
+
+.boardgame-instructions-list {
+    margin: 18px 0 0;
+    padding-left: 24px;
+    color: #dfe3ea;
+    font-size: 1.7rem;
+    line-height: 1.7;
+
+    li + li {
+        margin-top: 10px;
+    }
+}
+
+.boardgame-instructions-action {
+    display: flex;
+    justify-content: flex-start;
+
+    .button {
+        border-radius: 8px;
+        background: $accent;
+        border-color: $accent;
+        color: #ffffff;
+        font-weight: 700;
+    }
+}
+
+.boardgame-instructions-page > .button {
+    width: fit-content;
+    border-radius: 8px;
+    background: $accent;
+    border-color: $accent;
+    color: #ffffff;
+    font-weight: 700;
+}
+
+@media screen and (max-width: 820px) {
+    .boardgame-instructions-hero {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media screen and (max-width: 640px) {
+    .boardgame-instructions-page {
+        padding: 24px 0 48px;
+    }
+
+    .boardgame-instructions-panel {
+        padding: 22px;
+    }
+
+    .boardgame-instructions-list {
+        font-size: 1.6rem;
+    }
+}

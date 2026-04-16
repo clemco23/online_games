@@ -1,0 +1,9 @@
+@use 'abstracts/variables';
+@use 'base/global';
+@use 'components/nav';
+@use 'pages/home';
+@use 'pages/boardgame_instructions';
+@use 'pages/leaderboard';
+@use 'games/mastermind';
+@use 'games/filler';
+@use 'games/labyrinth';

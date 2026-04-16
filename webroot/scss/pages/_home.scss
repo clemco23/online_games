@@ -1,0 +1,192 @@
+@use '../abstracts/variables' as *;
+
+
+// The home route currently renders Boardgames/index.php.
+.boardgames-page {
+    position: relative;
+    isolation: isolate;
+    width: 100vw;
+    margin: -32px calc(50% - 50vw) 0;
+    padding: 72px 0 72px;
+    min-height: calc(100vh - 68px);
+    height: 100%;
+    padding: 32px 0 56px;
+    background:
+        linear-gradient(180deg, rgba(7, 10, 16, 0.28) 0%, rgba(7, 10, 16, 0.78) 56%, #0c0f17 100%),
+        radial-gradient(circle at top, rgba(124, 59, 237, 0.22), transparent 38%),
+        url('../img/back.png') center 18% / cover no-repeat;
+    z-index: 2;
+
+}
+
+
+
+
+
+.boardgames-page__inner {
+    width: min(1200px, calc(100% - 48px));
+    margin: 0 auto;
+    display: grid;
+    gap: 44px;
+}
+
+.boardgames-hero {
+    display: grid;
+    gap: 20px;
+    justify-items: center;
+    text-align: center;
+    padding: 18px 0 10px;
+}
+
+.boardgames-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 22px;
+    border-radius: 999px;
+    border: 1px solid rgba(167, 129, 255, 0.24);
+    background: rgba(41, 20, 79, 0.38);
+    color: #bf9cff;
+    font-size: 1.5rem;
+    font-weight: 700;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.boardgames-title {
+    margin: 0;
+    max-width: 900px;
+    color: #ffffff;
+    font-size: clamp(4.4rem, 7vw, 7.8rem);
+    font-weight: 800;
+    line-height: 0.98;
+    letter-spacing: -0.06em;
+
+    span {
+        color: #8e5cff;
+    }
+}
+
+.boardgames-subtitle {
+    margin: 0;
+    max-width: 780px;
+    color: #9ea7b6;
+    font-size: clamp(1.8rem, 2.2vw, 2.4rem);
+    line-height: 1.55;
+}
+
+.boardgames-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+}
+
+.boardgame-card {
+    display: grid;
+    grid-template-rows: 240px auto;
+    background: rgba(24, 28, 39, 0.94);
+    border: 1px solid rgba(133, 142, 160, 0.18);
+    border-radius: 24px;
+    overflow: hidden;
+    text-decoration: none;
+    box-shadow: 0 20px 45px rgba(7, 10, 16, 0.24);
+    transition: transform 0.24s ease, border-color 0.24s ease, box-shadow 0.24s ease;
+}
+
+.boardgame-card:hover,
+.boardgame-card:focus {
+    transform: translateY(-6px);
+    border-color: rgba(167, 129, 255, 0.34);
+    box-shadow: 0 24px 52px rgba(7, 10, 16, 0.34);
+}
+
+.boardgame-card-media {
+    display: block;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.boardgame-card-body {
+    display: grid;
+    gap: 14px;
+    padding: 24px;
+}
+
+.boardgame-card-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.boardgame-card-title {
+    color: #ffffff;
+    font-size: 3.2rem;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+}
+
+.boardgame-card-arrow {
+    color: $muted;
+    font-size: 2.4rem;
+    transition: transform 0.24s ease, color 0.24s ease;
+}
+
+.boardgame-card:hover .boardgame-card-arrow,
+.boardgame-card:focus .boardgame-card-arrow {
+    color: #bf9cff;
+    transform: translateX(5px);
+}
+
+.boardgame-card-text {
+    color: $muted;
+    font-size: 1.8rem;
+    line-height: 1.6;
+}
+
+@media screen and (max-width: 980px) {
+    .boardgames-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media screen and (max-width: 640px) {
+    .boardgames-page {
+        padding: 48px 0 56px;
+    }
+
+    .boardgames-page::before {
+        background-position: center top;
+    }
+
+    .boardgames-page__inner {
+        width: min(100%, calc(100% - 32px));
+        gap: 28px;
+    }
+
+    .boardgames-hero {
+        justify-items: start;
+        text-align: left;
+    }
+
+    .boardgames-badge {
+        font-size: 1.3rem;
+        padding: 10px 16px;
+    }
+
+    .boardgames-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .boardgame-card {
+        grid-template-rows: 220px auto;
+    }
+
+    .boardgame-card-title {
+        font-size: 2.8rem;
+    }
+
+    .boardgame-card-text {
+        font-size: 1.6rem;
+    }
+}
