@@ -18,7 +18,12 @@ class LabyrinthController extends AppController
         'right' => ['x' => 1, 'y' => 0],
     ];
 
-    protected  $requiresAuth = true;
+    public function beforeFilter($event)
+    {
+        $this->requiresAuth = true;
+
+        return parent::beforeFilter($event);
+    }
 
     public function index()
     {

@@ -159,14 +159,7 @@ class FillersController extends AppController
      */
     public function play($sessionGameId)
     {
-        $identity = $this->request->getAttribute('identity');
-        if (!$identity) {
-            $this->Flash->error('Vous devez être connecté pour accéder à la partie.');
-
-            return $this->redirect(['controller' => 'Users', 'action' => 'login']);
-        }
-
-        $userId = $identity->id;
+        $userId = $this->currentUserId();
 
         $Sessionsgames = $this->fetchTable('Sessionsgames');
         $session = $Sessionsgames->find()
@@ -188,7 +181,7 @@ class FillersController extends AppController
 
         $isInSession = false;
         foreach ($session->users_sessionsgames as $usersSession) {
-            if ($usersSession->user_id === $userId) {
+            if ((int)$usersSession->user_id === $userId) {
                 $isInSession = true;
                 break;
             }
@@ -212,16 +205,16 @@ class FillersController extends AppController
         $player2 = $players[1] ?? null;
 
         $currentPlayerNumber = null;
-        if ($player1 && $player1->user_id === $userId) {
+        if ($player1 && (int)$player1->user_id === $userId) {
             $currentPlayerNumber = 1;
-        } elseif ($player2 && $player2->user_id === $userId) {
+        } elseif ($player2 && (int)$player2->user_id === $userId) {
             $currentPlayerNumber = 2;
         }
 
         $isWaitingOpponent = count($players) < 2;
         $isMyTurn = !$isWaitingOpponent
             && !$session->isfinish
-            && $filler->current_turn_user_id === $userId;
+            && (int)$filler->current_turn_user_id === $userId;
 
         $player1Cells = [];
         $player2Cells = [];
@@ -240,8 +233,8 @@ class FillersController extends AppController
         }
 
         if (!$isWaitingOpponent && !$session->isfinish && !empty($grid)) {
-            $player1Color = $grid[0][0];
-            $player2Color = $grid[count($grid) - 1][count($grid[0]) - 1];
+            $player1Color = (int)$grid[0][0];
+            $player2Color = (int)$grid[count($grid) - 1][count($grid[0]) - 1];
 
             if ($currentPlayerNumber === 1) {
                 $allowedColors = array_values(array_diff([1, 2, 3, 4], [$player1Color, $player2Color]));
@@ -283,16 +276,10 @@ class FillersController extends AppController
     public function chooseColor($sessionGameId = null, $color = null)
     {
         $passParams = $this->request->getParam('pass') ?? [];
-        $sessionGameId = ($sessionGameId ?? ($passParams[0] ?? 0));
+        $sessionGameId = (int)($sessionGameId ?? ($passParams[0] ?? 0));
         $color = filter_var($color ?? ($passParams[1] ?? null), FILTER_VALIDATE_INT);
 
-        $identity = $this->request->getAttribute('identity');
-        if (!$identity) {
-            $this->Flash->error('Vous devez être connecté.');
-            return $this->redirect(['controller' => 'Users', 'action' => 'login']);
-        }
-
-        $userId = $identity->id;
+        $userId = $this->currentUserId();
 
         if ($color === false || !in_array($color, [1, 2, 3, 4], true)) {
             $this->Flash->error('Couleur invalide.');
@@ -326,13 +313,15 @@ class FillersController extends AppController
             throw new NotFoundException('Données Filler introuvables pour cette session.');
         }
 
+        $session->filler = $this->ensureFillerForSession($session, $userId);
+
         $players = $session->users_sessionsgames;
         if (count($players) < 2) {
             $this->Flash->error('La partie n’a pas encore 2 joueurs.');
             return $this->redirect(['action' => 'play', $sessionGameId]);
         }
 
-        if ($session->filler->current_turn_user_id !== $userId) {
+        if ((int)$session->filler->current_turn_user_id !== $userId) {
             $this->Flash->error('Ce n’est pas ton tour.');
             return $this->redirect(['action' => 'play', $sessionGameId]);
         }
@@ -340,8 +329,8 @@ class FillersController extends AppController
         $player1 = $players[0];
         $player2 = $players[1];
 
-        $isPlayer1 = ($player1->user_id === $userId);
-        $isPlayer2 = ($player2->user_id === $userId);
+        $isPlayer1 = ((int)$player1->user_id === $userId);
+        $isPlayer2 = ((int)$player2->user_id === $userId);
 
         if (!$isPlayer1 && !$isPlayer2) {
             $this->Flash->error('Vous ne faites pas partie de cette session.');
@@ -357,8 +346,8 @@ class FillersController extends AppController
         $rows = count($grid);
         $cols = count($grid[0]);
 
-        $player1Color = $grid[0][0];
-        $player2Color = $grid[$rows - 1][$cols - 1];
+        $player1Color = (int)$grid[0][0];
+        $player2Color = (int)$grid[$rows - 1][$cols - 1];
 
         if ($isPlayer1) {
             if ($color === $player1Color) {
@@ -372,7 +361,7 @@ class FillersController extends AppController
             }
 
             $grid = $this->applyMove($grid, 1, $color);
-            $nextTurnUserId = $player2->user_id;
+            $nextTurnUserId = (int)$player2->user_id;
         } else {
             if ($color === $player2Color) {
                 $this->Flash->error('Tu as déjà cette couleur.');
@@ -385,7 +374,7 @@ class FillersController extends AppController
             }
 
             $grid = $this->applyMove($grid, 2, $color);
-            $nextTurnUserId = $player1->user_id;
+            $nextTurnUserId = (int)$player1->user_id;
         }
 
         $session->filler->grid = json_encode($grid);
@@ -563,14 +552,26 @@ class FillersController extends AppController
     {
         $Fillers = $this->fetchTable('Fillers');
         $filler = $session->filler ?? null;
+        $players = [];
+        foreach ($session->users_sessionsgames ?? [] as $usersSession) {
+            $players[] = $usersSession;
+        }
+
+        $player1 = $players[0] ?? null;
+        $validTurnUserIds = [];
+
+        foreach ($players as $usersSession) {
+            if ($usersSession->user_id !== null) {
+                $validTurnUserIds[] = (int)$usersSession->user_id;
+            }
+        }
 
         if ($filler === null) {
             $nbColonne = 8;
             $grid = $this->generateGrid($nbColonne, 4);
             $grid = $this->DifferentCornerColors($grid, 4);
 
-            $player1 = $session->users_sessionsgames[0] ?? null;
-            $currentTurnUserId = $player1 ? $player1->user_id : $fallbackUserId;
+            $currentTurnUserId = $player1 ? (int)$player1->user_id : (int)$fallbackUserId;
 
             $filler = $Fillers->newEntity([
                 'nb_colonne' => $nbColonne,
@@ -585,12 +586,10 @@ class FillersController extends AppController
             return $filler;
         }
 
-        if (empty($filler->current_turn_user_id)) {
-            $player1 = $session->users_sessionsgames[0] ?? null;
-            if ($player1) {
-                $filler->current_turn_user_id = $player1->user_id;
-                $Fillers->saveOrFail($filler);
-            }
+        $currentTurnUserId = (int)($filler->current_turn_user_id ?? 0);
+        if (!(bool)$session->isfinish && $player1 && !in_array($currentTurnUserId, $validTurnUserIds, true)) {
+            $filler->current_turn_user_id = (int)$player1->user_id;
+            $Fillers->saveOrFail($filler);
         }
 
         return $filler;
@@ -605,10 +604,10 @@ class FillersController extends AppController
      */
     private function isUserInSession( $usersSessionsgames,  $userId)
     {
-        $userId = $userId;
+        $userId = (int)$userId;
 
         foreach ($usersSessionsgames as $usersSession) {
-            if ($usersSession->user_id === $userId) {
+            if ((int)$usersSession->user_id === $userId) {
                 return true;
             }
         }
@@ -624,15 +623,15 @@ class FillersController extends AppController
     private function currentUserId()
     {
         if (is_object($this->currentUser) && method_exists($this->currentUser, 'getIdentifier')) {
-            return $this->currentUser->getIdentifier();
+            return (int)$this->currentUser->getIdentifier();
         }
 
         if (is_object($this->currentUser) && isset($this->currentUser->id)) {
-            return $this->currentUser->id;
+            return (int)$this->currentUser->id;
         }
 
         if (is_array($this->currentUser) && isset($this->currentUser['id'])) {
-            return $this->currentUser['id'];
+            return (int)$this->currentUser['id'];
         }
 
         throw new ForbiddenException('Utilisateur introuvable.');
